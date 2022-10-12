@@ -15,38 +15,33 @@ namespace reflexor{
             Console.WriteLine("\\__|       \\_______|\\__|      \\__| \\_______|\\__/  \\__| \\______/ \\__|      ");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("[1] to start");
-            Console.WriteLine("[2] to view leaderboard");
+            Console.WriteLine("[1] Start");
+            Console.WriteLine("[2] Leaderboard");
             Console.WriteLine();
 
             string choice = Console.ReadLine() ?? "";
-
             if(choice == "1"){
+                Console.Clear();
                 Console.WriteLine("Enter a username:");
                 string username = Console.ReadLine() ?? "";
                 if(username.Length == 0) {
                     Environment.Exit(0);
                 }
+                Console.Clear();
                 Console.Write("Starting in 3");
                 Thread.Sleep(1000);
-                Console.Write("\b");
-                Console.Write("2");
+                Console.Clear();
+                Console.Write("Starting in 2");
                 Thread.Sleep(1000);
-                Console.Write("\b");
-                Console.Write("1");
+                Console.Clear();
+                Console.Write("Startign in 1");
                 Thread.Sleep(1000);
                 Console.WriteLine("GO");
-                // public static void ClearCurrentConsoleLine()
-                // {
-                //     int currentLineCursor = Console.CursorTop;
-                //     Console.SetCursorPosition(0, Console.CursorTop);
-                //     Console.Write(new string(' ', Console.WindowWidth)); 
-                //     Console.SetCursorPosition(0, currentLineCursor);
-                // }
+                Console.Clear();
 
-                
-                
-
+                int unicode = 65;
+                Console.WriteLine(Convert.ToChar(unicode));
+                while (Console.ReadKey().Key != ConsoleKey.A) {}
             }
         }
     }
