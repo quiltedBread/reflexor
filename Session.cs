@@ -1,16 +1,21 @@
 using System.Diagnostics;
+using System.Globalization;
+
+using CsvHelper;
 
 namespace reflexor;
 
 class Session
 {
+    public string Username { get; set; }
+    public decimal Seconds { get; set; }
+    string Chars { get; set; }
     int CharCount = 10;
     string PotentialChars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789";
 
-    public string Chars { get; set; }
-
-    public Session()
+    public Session(string username)
     {
+        Username = username;
         Chars = GetChars();
     }
 
@@ -37,5 +42,15 @@ class Session
         }
         timer.Stop();
         Console.WriteLine(timer.Elapsed);
+    }
+
+    public void Save()
+    {
+        using (var reader = new StreamReader("sessions.csv"))
+        {
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<Session>();
+        }
+        Console.WriteLine("saved");
     }
 }
