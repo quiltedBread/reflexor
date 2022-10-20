@@ -1,7 +1,4 @@
 using System.Diagnostics;
-using System.Globalization;
-
-using CsvHelper;
 
 namespace reflexor;
 
@@ -9,23 +6,23 @@ class Session
 {
     public string Username { get; set; }
     public decimal Seconds { get; set; }
-    string Chars { get; set; }
-    int CharCount = 10;
+    string RandomChars { get; set; }
+    int CharCount = 1;
     string PotentialChars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789";
 
     public Session(string username)
     {
         Username = username;
-        Chars = GetChars();
+        RandomChars = GetRandomChars();
     }
 
-    string GetChars()
+    string GetRandomChars()
     {
         string chars = "";
         Random rnd = new Random();
         for (var i = 0; i <= CharCount; i++)
         {
-            chars += PotentialChars[rnd.Next(0, PotentialChars.Length + 1)];
+            chars += PotentialChars[rnd.Next(0, PotentialChars.Length)];
         }
         return chars;
     }
@@ -34,7 +31,7 @@ class Session
     {
         var timer = new Stopwatch();
         timer.Start();
-        foreach (char c in Chars)
+        foreach (char c in RandomChars)
         {
             Console.Clear();
             Console.WriteLine(c);
@@ -46,11 +43,11 @@ class Session
 
     public void Save()
     {
-        using (var reader = new StreamReader("sessions.csv"))
+        RecordRepository.AddRecord(new Record(Username, Seconds));
+        var records = RecordRepository.Records;
+        foreach (var r in records)
         {
-            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<Session>();
+            Console.WriteLine($"{r.Username}, {r.Seconds}");
         }
-        Console.WriteLine("saved");
     }
 }

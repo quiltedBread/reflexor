@@ -15,9 +15,10 @@
                 {
                     Environment.Exit(0);
                 }
-                ConsoleWriter.CountDown(3);
+                // ConsoleWriter.CountDown(3);
                 var session = new Session(username);
                 session.Start();
+                session.Save();
             }
             // Leaderboard
             if (option == "2")
