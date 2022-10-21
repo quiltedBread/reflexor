@@ -31,9 +31,6 @@ class Screen
         );
         Console.WriteLine();
         Console.WriteLine();
-        Console.WriteLine("[1] Start");
-        Console.WriteLine("[2] Leaderboard");
-        Console.WriteLine();
     }
 
     public static string GetUsername()
@@ -62,5 +59,26 @@ class Screen
         Console.Write($"{username}".PadRight(10));
         Console.Write($"{seconds}".PadRight(10));
         Console.WriteLine();
+    }
+
+    public static string GetOption()
+    {
+        Console.WriteLine("[1] Start");
+        Console.WriteLine("[2] Leaderboard");
+        Console.WriteLine("[3] Quit");
+        Console.WriteLine();
+        return Console.ReadLine() ?? "";
+    }
+
+    public static bool PromptPlayAgain()
+    {
+        Console.WriteLine("Play Again? (Y/N)");
+
+        var key = Console.ReadKey().ToString()?.ToUpper();
+        if (key == "Y")
+        {
+            return true;
+        }
+        return false;
     }
 }
