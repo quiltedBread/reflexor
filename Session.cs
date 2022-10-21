@@ -5,10 +5,10 @@ namespace reflexor;
 class Session
 {
     public string Username { get; set; }
-    public decimal Seconds { get; set; }
+    public double Seconds { get; set; }
     string RandomChars { get; set; }
     int CharCount = 1;
-    string PotentialChars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789";
+    string PotentialChars = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnPpQqRrSsTtUuVvWwXxYyZz123456789";
 
     public Session(string username)
     {
@@ -38,16 +38,26 @@ class Session
             while (Console.ReadKey().KeyChar != c) { }
         }
         timer.Stop();
-        Console.WriteLine(timer.Elapsed);
+        Seconds = timer.Elapsed.TotalSeconds;
     }
 
     public void Save()
     {
+        Console.Clear();
         RecordRepository.AddRecord(new Record(Username, Seconds));
-        var records = RecordRepository.Records;
-        foreach (var r in records)
+        // display top 10 records
+        var TopRecords = RecordRepository.GetRecords(10);
+        for (int i = 0; i < TopRecords.Count(); i++)
         {
-            Console.WriteLine($"{r.Username}, {r.Seconds}");
+            Screen.WriteScore(i + 1, TopRecords[i].Username, TopRecords[i].Seconds);
+        }
+        // display rank if score not in top 10 records
+        var rank = RecordRepository.GetRank(Seconds);
+        if (rank > 10)
+        {
+            Console.WriteLine();
+            Console.WriteLine("...");
+            Screen.WriteScore(rank, Username, Seconds);
         }
     }
 }

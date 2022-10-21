@@ -1,6 +1,6 @@
 namespace reflexor;
 
-class ConsoleWriter
+class Screen
 {
     public static void WriteIntro()
     {
@@ -40,7 +40,8 @@ class ConsoleWriter
     {
         Console.Clear();
         Console.WriteLine("Enter a username:");
-        return Console.ReadLine() ?? "";
+        string username = Console.ReadLine() ?? "";
+        return username.Substring(0, Math.Min(username.Length, 8));
     }
 
     public static void CountDown(int seconds)
@@ -53,5 +54,13 @@ class ConsoleWriter
         }
         Console.Clear();
         Console.WriteLine("GO");
+    }
+
+    public static void WriteScore(int rank, string username, double seconds)
+    {
+        Console.Write($"{rank}.".PadRight(3));
+        Console.Write($"{username}".PadRight(10));
+        Console.Write($"{seconds}".PadRight(10));
+        Console.WriteLine();
     }
 }

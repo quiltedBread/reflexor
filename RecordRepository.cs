@@ -6,21 +6,34 @@ using CsvHelper.Configuration;
 
 class RecordRepository
 {
-    public static IEnumerable<Record> Records
+    public static List<Record> GetRecords()
     {
-        get
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                PrepareHeaderForMatch = args => args.Header.ToLower(),
-                Delimiter = ",",
-            };
-            using (var reader = new StreamReader("records.csv"))
-            using (var csv = new CsvReader(reader, config))
-            {
-                return csv.GetRecords<Record>().ToList();
-            }
+            PrepareHeaderForMatch = args => args.Header.ToLower(),
+            Delimiter = ",",
+        };
+        using (var reader = new StreamReader("records.csv"))
+        using (var csv = new CsvReader(reader, config))
+        {
+            return csv.GetRecords<Record>().OrderBy(o => o.Seconds).ToList();
         }
+    }
+
+    public static List<Record> GetRecords(int max)
+    {
+        return GetRecords().Take(max).ToList();
+    }
+
+    public static int GetRank(double seconds)
+    {
+        var records = GetRecords();
+        var index = records.FindIndex(x => x.Seconds > seconds);
+        if (index == -1)
+        {
+            return records.Count();
+        }
+        return index;
     }
 
     public static bool AddRecord(Record record)

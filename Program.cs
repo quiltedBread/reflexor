@@ -4,18 +4,19 @@
     {
         static void Main(String[] args)
         {
-            ConsoleWriter.WriteIntro();
+            Screen.WriteIntro();
 
             string option = Console.ReadLine() ?? "";
+
             // Start
             if (option == "1")
             {
-                var username = ConsoleWriter.GetUsername();
+                var username = Screen.GetUsername();
                 if (username.Length == 0)
                 {
                     Environment.Exit(0);
                 }
-                // ConsoleWriter.CountDown(3);
+                // Screen.CountDown(3);
                 var session = new Session(username);
                 session.Start();
                 session.Save();
@@ -23,7 +24,12 @@
             // Leaderboard
             if (option == "2")
             {
-                Console.WriteLine("leaderboard");
+                Console.Clear();
+                var leaders = RecordRepository.GetRecords(21);
+                for (int i = 0; i < leaders.Count(); i++)
+                {
+                    Screen.WriteScore(i + 1, leaders[i].Username, leaders[i].Seconds);
+                }
             }
         }
     }
